@@ -236,8 +236,10 @@ export default function AdminReservations() {
         body: JSON.stringify(editModal.show ? { ...formData, id: editModal.reservation.id } : formData),
       });
 
+      const data = await response.json();
+      if(response.status === 400) throw new Error(data.message);
       if (!response.ok) throw new Error('Failed to save reservation');
-
+      
       await fetchData();
       setAddModal(false);
       setEditModal({ show: false, reservation: null });
