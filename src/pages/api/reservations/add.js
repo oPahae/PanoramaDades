@@ -36,7 +36,7 @@ export default async function handler(req, res) {
     );
 
     if (conflictingReservations.length > 0) {
-      throw new Error('Room is already reserved for these dates');
+      return res.status(400).json({ message: 'This room is already reserved for this date' });
     }
 
     const [reservationResult] = await connection.query(
