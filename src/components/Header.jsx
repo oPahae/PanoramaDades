@@ -11,6 +11,11 @@ const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if(router.pathname.includes('gallery')) setScrolled(true);
+    else setScrolled(false);
+  }, [router.pathname]);
+
+  useEffect(() => {
     const stored = localStorage.getItem('currency');
     if (stored) {
       setCurrency(stored);
@@ -32,8 +37,9 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      if(router.pathname.includes('gallery')) return;
       const screenHeight = window.innerHeight;
-      if (window.scrollY >= screenHeight - 200 || router.pathname.includes('gallery')) setScrolled(true);
+      if (window.scrollY >= screenHeight - 200) setScrolled(true);
       else setScrolled(false);
     };
     window.addEventListener('scroll', handleScroll);
