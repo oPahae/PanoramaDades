@@ -9,7 +9,6 @@ import {
   Image as ImageIcon,
   Maximize2
 } from 'lucide-react';
-import { verifyAuth } from '@/middlewares/rootAuth';
 
 export default function Gallery() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -366,21 +365,4 @@ export default function Gallery() {
       `}</style>
     </div>
   );
-}
-
-export async function getServerSideProps({ req, res }) {
-  const root = verifyAuth(req, res);
-
-  if (!root) {
-    return {
-      redirect: {
-        destination: "/admin/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: { session: { connected: true } },
-  };
 }
