@@ -220,6 +220,15 @@ export default function HotelHome() {
                 </div>
               </div>
 
+              {/* To Gallery */}
+              <Link
+                href="/gallery"
+                className="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded font-medium tracking-wider uppercase shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all group"
+              >
+                <span>See more images</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+              </Link>
+
               {/* Stats & Awards*/}
               <div className='flex flex-col justify-center items-center w-full gap-2'>
                 <div className="grid grid-cols-3 gap-6 pt-8">
