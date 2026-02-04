@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Download, 
-  ZoomIn, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  ZoomIn,
   ZoomOut,
   X,
   Image as ImageIcon,
@@ -48,14 +48,14 @@ export default function Gallery() {
 
   const handleDownload = async () => {
     if (!images[currentIndex]) return;
-    
+
     try {
       const response = await fetch(images[currentIndex]);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = images[currentIndex].title || `image-${currentIndex + 1}.jpg`;
+      link.download = images[currentIndex].split('/').pop() || `image-${currentIndex + 1}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -67,9 +67,6 @@ export default function Gallery() {
 
   const toggleZoom = () => {
     setIsZoomed(!isZoomed);
-    if (isZoomed) {
-      setZoomLevel(1);
-    }
   };
 
   const handleZoomIn = () => {
@@ -146,7 +143,7 @@ export default function Gallery() {
               <img
                 src={currentImage}
                 className="max-w-full max-h-full object-contain transition-transform duration-300"
-                style={{ transform: isZoomed ? `scale(${zoomLevel})` : 'scale(1)' }}
+                style={{ transform: `scale(${zoomLevel})` }}
               />
 
               {/* Navigation Arrows */}
@@ -211,20 +208,6 @@ export default function Gallery() {
               <h3 className="text-xl font-serif font-bold text-stone-900 mb-2">
                 {`Image ${currentIndex + 1}`}
               </h3>
-              {currentImage.description && (
-                <p className="text-stone-600 text-sm">
-                  {currentImage.description}
-                </p>
-              )}
-              {currentImage.date && (
-                <p className="text-stone-500 text-xs mt-2">
-                  {new Date(currentImage.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </p>
-              )}
             </div>
           </div>
 
