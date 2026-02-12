@@ -113,7 +113,7 @@ export default function ContactPage() {
               icon: FaWhatsapp,
               title: 'WhatsApp',
               info: [hotelInfos.whatsapp],
-              link: `https://wa.me/${hotelInfos.whatsapp.replace(/\s/g, '')}`,
+              link: `https://wa.me/${hotelInfos.whatsapp.replace(/\D/g, "")}`,
               color: 'from-green-600 to-green-800'
             },
             {
@@ -134,6 +134,7 @@ export default function ContactPage() {
             <a
               key={i}
               href={contact.link}
+              target='_blank'
               className="group bg-white/95 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-stone-200/50 hover:shadow-2xl hover:border-amber-900/30 transition-all duration-300 hover:-translate-y-1"
             >
               <div className={`w-16 h-16 bg-gradient-to-br ${contact.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
@@ -395,4 +396,5 @@ export default function ContactPage() {
       </section>
     </div>
   );
+
 }
