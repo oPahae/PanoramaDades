@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   try {
     const [existingAgents] = await pool.query(
-      'SELECT id FROM agents WHERE id = ?',
+      'SELECT id FROM Agents WHERE id = ?',
       [id]
     );
 
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     }
 
     await pool.query(
-      'UPDATE agents SET name = ?, phone = ? WHERE id = ?',
+      'UPDATE Agents SET name = ?, phone = ? WHERE id = ?',
       [name.trim(), phone?.trim() || null, id]
     );
 
@@ -39,4 +39,5 @@ export default async function handler(req, res) {
     console.error('Error updating agent:', error);
     return res.status(500).json({ error: 'Failed to update agent' });
   }
+
 }
