@@ -103,7 +103,7 @@ const Header = () => {
               <option value="USD">USD</option>
               <option value="CHF">CHF</option>
             </select>
-            <Link href="/rooms" className="group relative px-8 py-3 overflow-hidden rounded font-medium text-sm tracking-wider uppercase text-white">
+            <Link href="/rooms" className="group relative px-6 py-3 overflow-hidden rounded font-medium text-sm tracking-wider uppercase text-white">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-800" />
               <div className="absolute inset-0 bg-gradient-to-r from-amber-700 to-amber-900 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
               <span className="relative z-10">BOOK NOW</span>
@@ -164,3 +164,4 @@ const Header = () => {
 }
 
 export default Header;
+
