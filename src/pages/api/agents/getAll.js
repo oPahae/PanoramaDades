@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   try {
     const [agents] = await pool.query(
-      'SELECT id, name, email, phone, dateCreation FROM agents ORDER BY dateCreation DESC'
+      'SELECT id, name, email, phone, dateCreation FROM Agents ORDER BY dateCreation DESC'
     );
 
     return res.status(200).json(agents);
@@ -15,4 +15,5 @@ export default async function handler(req, res) {
     console.error('Error fetching agents:', error);
     return res.status(500).json({ error: 'Failed to fetch agents' });
   }
+
 }
