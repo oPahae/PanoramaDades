@@ -30,6 +30,7 @@ export const headerAgentItems = [
 
 export const hotelInfos = {
     name: 'Panorama Dades',
+    domaine: 'panoramadades.com',
     email: 'contact@panoramadades.com',
     instagram: 'https://www.instagram.com/panoramadades/?hl=en',
     facebook: 'https://web.facebook.com/profile.php?id=100083187249340&locale=sq_AL#',
@@ -51,12 +52,12 @@ export const testimonials = [
     },
     {
         name: 'Michael Chen',
-        text: 'Our honeymoon at {hotelInfos.name} was perfect. The attention to detail, the romantic ambiance, and the world-class dining made it an experience we will cherish forever. Highly recommend the presidential suite!',
+        text: 'Our honeymoon at' + hotelInfos.name + 'was perfect. The attention to detail, the romantic ambiance, and the world-class dining made it an experience we will cherish forever. Highly recommend the presidential suite!',
         stars: 5,
     },
     {
         name: 'Emma Rodriguez',
-        text: 'I have stayed at {hotelInfos.name} hotels around the world, but {hotelInfos.name} stands out. The blend of modern elegance and warm hospitality is unmatched. The spa treatments and beach access were incredible. Coming back for sure!',
+        text: 'I have stayed at' + hotelInfos.name + 'hotels around the world, but' + hotelInfos.name + 'stands out. The blend of modern elegance and warm hospitality is unmatched. The spa treatments and beach access were incredible. Coming back for sure!',
         stars: 5,
     },
 ];
@@ -71,5 +72,4 @@ export const hotelAmenities = [
 export const hotelRules = [
     { icon: Cigarette, title: 'No Smoking', desc: 'Smoking not allowed', type: 'restriction' },
     { icon: Dog, title: 'No Pets', desc: 'Pets not allowed', type: 'restriction' },
-
 ];
