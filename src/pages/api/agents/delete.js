@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   try {
     const [existingAgents] = await pool.query(
-      'SELECT id FROM agents WHERE id = ?',
+      'SELECT id FROM Agents WHERE id = ?',
       [id]
     );
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Agent not found' });
     }
 
-    await pool.query('DELETE FROM agents WHERE id = ?', [id]);
+    await pool.query('DELETE FROM Agents WHERE id = ?', [id]);
 
     return res.status(200).json({
       success: true,
@@ -38,4 +38,5 @@ export default async function handler(req, res) {
     
     return res.status(500).json({ error: 'Failed to delete agent' });
   }
+
 }
