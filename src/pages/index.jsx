@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Bed, UtensilsCrossed, Mail, Calendar, Users, ChevronRight, Star, MapPin, Instagram, Facebook, Linkedin, Twitter, Menu, X, Award, Waves, ArrowRight, Check, Heart, Eye, Sunrise, Moon, Coffee, Wind } from 'lucide-react';
 import { hotelInfos, testimonials } from '@/utils/constants';
+import { FaWhatsapp } from 'react-icons/fa';
 
 export default function HotelHome() {
   const [currency, setCurrency] = useState("MAD");
@@ -47,6 +48,14 @@ export default function HotelHome() {
 
   return (
     <div className="min-h-screen bg-stone-50 relative overflow-hidden">
+      <a
+        href={`https://wa.me/${hotelInfos.whatsapp.replace(/\D/g, "")}`}
+        target='_blank'
+        className='fixed bottom-10 right-10 z-50 bg-white rounded-full hover:p-1 duration-200 cursor-pointer'
+      >
+        <FaWhatsapp size={44} color="#25D366" /> {/* taille et couleur personnalisable */}
+      </a>
+      
       {/* BG Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-radial from-amber-200/60 via-amber-100/30 to-transparent rounded-full blur-3xl animate-float" />
@@ -755,3 +764,4 @@ export default function HotelHome() {
     </div>
   );
 }
+
