@@ -561,7 +561,7 @@ export default function HotelHome() {
                   <div className="relative group overflow-hidden rounded-2xl">
                     <div className="aspect-[3/4] relative">
                       <img
-                        src="/view2.jpeg"
+                        src="/swimming/main.png"
                         alt="Pool"
                         className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                       />
