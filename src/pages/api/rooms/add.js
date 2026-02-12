@@ -20,7 +20,8 @@ export default async function handler(req, res) {
   try {
     const form = formidable({
       multiples: true,
-      maxFileSize: 10 * 1024 * 1024,
+      maxFileSize: 50 * 1024 * 1024,      // 50 Mo par fichier
+      maxTotalFileSize: 50 * 1024 * 1024, // 50 Mo total
     });
 
     const [fields, files] = await new Promise((resolve, reject) => {
@@ -184,4 +185,5 @@ export default async function handler(req, res) {
       error: error.message
     });
   }
+
 }
