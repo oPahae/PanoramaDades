@@ -24,7 +24,6 @@ export default function Gallery() {
     "/restaurant/3.jpg",
     "/restaurant/4.jpg",
     "/restaurant/5.jpg",
-    "/swimming/hero.jpg",
     "/swimming/main.png",
     "/swimming/1.png",
     "/swimming/2.jpg",
@@ -364,4 +363,5 @@ export default function Gallery() {
     </div>
   );
 }
+
 
