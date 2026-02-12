@@ -55,7 +55,7 @@ export default function HotelHome() {
       >
         <FaWhatsapp size={44} color="#25D366" /> {/* taille et couleur personnalisable */}
       </a>
-      
+
       {/* BG Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden opacity-40">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-radial from-amber-200/60 via-amber-100/30 to-transparent rounded-full blur-3xl animate-float" />
@@ -199,7 +199,7 @@ export default function HotelHome() {
               <div className="relative group overflow-hidden rounded-2xl">
                 <div className="aspect-[4/3] relative">
                   <img
-                    src="/view1.jpeg"
+                    src="/swimming/3.png"
                     alt="Hotel View"
                     className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                   />
@@ -764,4 +764,3 @@ export default function HotelHome() {
     </div>
   );
 }
-
