@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     const [result] = await pool.query(
-      'INSERT INTO agents (name, email, phone, password, dateCreation) VALUES (?, ?, ?, ?, NOW())',
+      'INSERT INTO Agents (name, email, phone, password, dateCreation) VALUES (?, ?, ?, ?, NOW())',
       [name.trim(), email.trim(), phone?.trim() || null, hashedPassword]
     );
 
@@ -52,4 +52,5 @@ export default async function handler(req, res) {
     console.error('Error adding agent:', error);
     return res.status(500).json({ error: 'Failed to add agent' });
   }
+
 }
