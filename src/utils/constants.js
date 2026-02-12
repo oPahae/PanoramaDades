@@ -30,7 +30,7 @@ export const headerAgentItems = [
 
 export const hotelInfos = {
     name: 'Panorama Dades',
-    email: 'test@test.com',
+    email: 'contact@panoramadades.com',
     instagram: 'https://www.instagram.com/panoramadades/?hl=en',
     facebook: 'https://web.facebook.com/profile.php?id=100083187249340&locale=sq_AL#',
     linkedin: 'https://ma.linkedin.com/in/abdrahim-boulmane-71b67038a',
@@ -71,4 +71,5 @@ export const hotelAmenities = [
 export const hotelRules = [
     { icon: Cigarette, title: 'No Smoking', desc: 'Smoking not allowed', type: 'restriction' },
     { icon: Dog, title: 'No Pets', desc: 'Pets not allowed', type: 'restriction' },
+
 ];
