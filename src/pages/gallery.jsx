@@ -15,8 +15,6 @@ export default function Gallery() {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [images, setImages] = useState([
-    "/view1.jpeg",
-    "/view2.jpeg",
     "/view3.jpg",
     "/view4.jpg",
     "/restaurant/hero.jpg",
@@ -366,3 +364,4 @@ export default function Gallery() {
     </div>
   );
 }
+
