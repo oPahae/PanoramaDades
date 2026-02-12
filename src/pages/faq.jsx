@@ -120,13 +120,13 @@ export default function FAQ() {
                     <div className="mt-20 text-center">
                         <div className="bg-gradient-to-br from-amber-50 to-stone-100 rounded-2xl p-12 border border-amber-200/50">
                             <h3 className="text-3xl font-serif font-bold text-stone-900 mb-4">
-                                You have ohter questions ?
+                                You have other questions ?
                             </h3>
                             <p className="text-stone-600 text-lg mb-8 font-light">
                                 We are ready to answer all your questions
                             </p>
                             <a
-                                href="mailto:contact@hotel.com"
+                                href="/contact"
                                 className="inline-flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded-lg font-medium tracking-wider uppercase shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
                             >
                                 <span>Contact Us</span>
