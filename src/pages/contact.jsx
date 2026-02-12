@@ -66,10 +66,7 @@ export default function ContactPage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <div
-            className="absolute inset-0 bg-cover bg-center transform scale-110"
-            style={{
-              backgroundImage: 'url(https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1920)',
-            }}
+            className="absolute inset-0 bg-cover bg-center transform scale-110 bg-[url('/hero.png')]"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-stone-900/70 via-stone-900/50 to-stone-50" />
         </div>
