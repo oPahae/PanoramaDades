@@ -569,12 +569,12 @@ export default function AdminInvoices() {
   //             <td>
   //               <strong>${inv.roomTitle}</strong><br>
   //             </td>
-  //             <td class="text-right">$${unitPrice.toFixed(2)}</td>
+  //             <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
   //             <td class="text-center">U</td>
   //             <td class="text-center">${nights}</td>
-  //             <td class="text-right">$${parseFloat(inv.amount).toFixed(2)}</td>
+  //             <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
   //             <td class="text-right">${inv.discount}%</td>
-  //             <td class="text-right">$${amountHT.toFixed(2)}</td>
+  //             <td class="text-right">${amountHT.toFixed(2)} MAD</td>
   //           </tr>
   //         `;
   //   }).join('')}
@@ -585,15 +585,15 @@ export default function AdminInvoices() {
   //   <div class="totals-section">
   //     <div class="total-row">
   //       <span>Total HT:</span>
-  //       <span>$${totalHT.toFixed(2)}</span>
+  //       <span>${totalHT.toFixed(2)} MAD</span>
   //     </div>
   //     <div class="total-row">
   //       <span>TVA:</span>
-  //       <span>$${totalTVA.toFixed(2)}</span>
+  //       <span>${totalTVA.toFixed(2)} MAD</span>
   //     </div>
   //     <div class="total-row final">
   //       <span>TOTAL TTC TO PAY:</span>
-  //       <span>$${totalTTC.toFixed(2)}</span>
+  //       <span>${totalTTC.toFixed(2)} MAD</span>
   //     </div>
   //   </div>
 
@@ -881,12 +881,12 @@ export default function AdminInvoices() {
             <td>
               <strong>${inv.roomTitle}</strong><br>
             </td>
-            <td class="text-right">$${unitPrice.toFixed(2)}</td>
+            <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
             <td class="text-center">U</td>
             <td class="text-center">${nights}</td>
-            <td class="text-right">$${parseFloat(inv.amount).toFixed(2)}</td>
+            <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
             <td class="text-right">${inv.discount}%</td>
-            <td class="text-right">$${amountHT.toFixed(2)}</td>
+            <td class="text-right">${amountHT.toFixed(2)} MAD</td>
           </tr>
         `;
     }).join('')}
@@ -897,15 +897,15 @@ export default function AdminInvoices() {
   <div class="totals-section">
     <div class="total-row">
       <span>Total HT :</span>
-      <span>$${totalHT.toFixed(2)}</span>
+      <span>${totalHT.toFixed(2)} MAD</span>
     </div>
     <div class="total-row">
       <span>TVA :</span>
-      <span>$${totalTVA.toFixed(2)}</span>
+      <span>${totalTVA.toFixed(2)} MAD</span>
     </div>
     <div class="total-row final">
       <span>TOTAL TTC À PAYER :</span>
-      <span>$${totalTTC.toFixed(2)}</span>
+      <span>${totalTTC.toFixed(2)} MAD</span>
     </div>
   </div>
 
