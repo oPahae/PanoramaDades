@@ -466,7 +466,7 @@ export default function AdminInvoices() {
   //     .total-row {
   //       display: flex;
   //       justify-content: space-between;
-  //       width: 200px;
+  //       width: 260px;
   //       font-size: 13px;
   //       color: #374151;
   //     }
@@ -612,7 +612,7 @@ export default function AdminInvoices() {
   //   `;
   // };
 
-  // FR :
+  // FRENSH :
   const generateInvoiceHTML = () => {
     const totalHT = selectedInvoices.reduce((sum, inv) => {
       const amountHT = inv.amount * (1 - inv.discount / 100);
@@ -778,7 +778,7 @@ export default function AdminInvoices() {
     .total-row {
       display: flex;
       justify-content: space-between;
-      width: 200px;
+      width: 260px;
       font-size: 13px;
       color: #374151;
     }
