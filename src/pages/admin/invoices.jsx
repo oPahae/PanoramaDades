@@ -143,7 +143,7 @@ export default function AdminInvoices() {
 
     try {
       setProcessing(true);
-      const html = generateInvoiceHTML();
+      const html = generateInvoiceHTML2();
 
       const response = await fetch('/api/invoices/pdf', {
         method: 'POST',
@@ -301,318 +301,6 @@ export default function AdminInvoices() {
   };
 
   // ENG :
-  // const generateInvoiceHTML = () => {
-  //   const totalHT = selectedInvoices.reduce((sum, inv) => {
-  //     const amountHT = inv.amount * (1 - inv.discount / 100);
-  //     return sum + amountHT;
-  //   }, 0);
-
-  //   const totalTVA = selectedInvoices.reduce((sum, inv) => {
-  //     const amountHT = inv.amount * (1 - inv.discount / 100);
-  //     const tvaAmount = amountHT * (inv.tva / 100);
-  //     return sum + tvaAmount;
-  //   }, 0);
-
-  //   const totalTTC = totalHT + totalTVA;
-
-  //   const getStatusEmoji = (status) => {
-  //     switch (status?.toLowerCase()) {
-  //       case 'paid': return '✅';
-  //       case 'pending': return '⏳';
-  //       case 'canceled': return '❌';
-  //       default: return '⏳';
-  //     }
-  //   };
-
-  //   return `
-  // <!DOCTYPE html>
-  // <html>
-  // <head>
-  //   <meta charset="UTF-8">
-  //   <style>
-  //     * { margin: 0; padding: 0; box-sizing: border-box; }
-  //     body { 
-  //       font-family: 'Helvetica', 'Arial', sans-serif; 
-  //       padding: 20px;
-  //       color: #333;
-  //       line-height: 1.6;
-  //       max-width: 1000px;
-  //       margin: 0 auto;
-  //     }
-
-  //     .logo-section {
-  //       text-align: center;
-  //       margin-bottom: 14px;
-  //     }
-
-  //     .logo-section img {
-  //       height: 60px;
-  //     }
-
-  //     .logo-section h1 {
-  //       font-size: 20px;
-  //       color: #1e3a8a;
-  //       margin-bottom: 15px;
-  //       font-weight: 600;
-  //     }
-
-  //     .logo-section .divider {
-  //       width: 100%;
-  //       height: 3px;
-  //       background: #1e3a8a;
-  //       margin-top: 10px;
-  //     }
-
-  //     .invoice-info {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       margin: 8px 0;
-  //       font-size: 14px;
-  //     }
-
-  //     .invoice-left p {
-  //       margin: 5px 0;
-  //       color: #4b5563;
-  //     }
-
-  //     .invoice-right {
-  //       text-align: right;
-  //     }
-
-  //     .status-line {
-  //       font-size: 16px;
-  //       font-weight: 500;
-  //     }
-
-  //     .section-header {
-  //       background: #1e3a8a;
-  //       color: white;
-  //       padding: 12px 20px;
-  //       font-size: 16px;
-  //       font-weight: 600;
-  //       margin-top: 0;
-  //       margin-bottom: 0;
-  //     }
-
-  //     .info-box {
-  //       border: 1px solid #d1d5db;
-  //       padding: 8px;
-  //       margin-bottom: 20px;
-  //       margin-top: 4px;
-  //     }
-
-  //     .info-box p {
-  //       font-size: 14px;
-  //       color: #4b5563;
-  //     }
-
-  //     .info-box .name {
-  //       color: #1e3a8a;
-  //       font-weight: 600;
-  //       font-size: 16px;
-  //       margin-bottom: 4px;
-  //     }
-
-  //     table {
-  //       width: 100%;
-  //       border-collapse: collapse;
-  //       margin: 30px 0;
-  //       overflow: hidden;
-  //       border-radius: 8px;
-  //     }
-
-  //     thead {
-  //       background: #1e3a8a;
-  //       color: white;
-  //     }
-
-  //     th {
-  //       padding: 14px 10px;
-  //       text-align: left;
-  //       font-size: 13px;
-  //       font-weight: 600;
-  //       text-transform: uppercase;
-  //       letter-spacing: 0.5px;
-  //     }
-
-  //     td {
-  //       padding: 12px 10px;
-  //       border-bottom: 1px solid #e5e7eb;
-  //       font-size: 13px;
-  //       color: #374151;
-  //     }
-
-  //     tbody tr:last-child td {
-  //       border-bottom: none;
-  //     }
-
-  //     tbody tr {
-  //       background: white;
-  //     }
-
-  //     tbody tr:hover {
-  //       background: #f9fafb;
-  //     }
-
-  //     .text-right { text-align: right; }
-  //     .text-center { text-align: center; }
-
-  //     .totals-section {
-  //       display: flex;
-  //       flex-direction: column;
-  //       align-items: flex-end;
-  //     }
-
-  //     .total-row {
-  //       display: flex;
-  //       justify-content: space-between;
-  //       width: 260px;
-  //       font-size: 13px;
-  //       color: #374151;
-  //     }
-
-  //     .total-row.final {
-  //       border-top: 2px solid #1e3a8a;
-  //       margin-top: 2px;
-  //       font-size: 13px;
-  //       font-weight: bold;
-  //       color: #1e3a8a;
-  //     }
-
-  //     .amount-words {
-  //       background: rgb(235, 213, 52, 0.2);
-  //       padding: 8px;
-  //       border-radius: 8px;
-  //       font-style: italic;
-  //       color: #374151;
-  //       text-align: start;
-  //       font-size: 12px;
-  //       border-left: 4px solid orange;
-  //       margin-block: 14px;
-  //     }
-
-  //     .footer {
-  //       margin-top: 10px;
-  //       border-top: 2px solid #e5e7eb;
-  //       text-align: center;
-  //       font-size: 10px;
-  //       color: #9ca3af;
-  //     }
-
-  //     .footer p {
-  //       margin: 4px 0;
-  //     }
-  //   </style>
-  // </head>
-  // <body>
-  //   <!-- Logo and Title -->
-  //   <div class="logo-section">
-  //     <img src="{{LOGO_BASE64}}" alt="Logo">
-  //     <h1>Invoice</h1>
-  //     <div class="divider"></div>
-  //   </div>
-
-  //   <!-- Invoice Info -->
-  //   <div class="invoice-info">
-  //     <div class="invoice-left">
-  //       <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
-  //       <p>Gorges Dades, ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-  //     </div>
-  //     <div class="invoice-right">
-  //       <p class="status-line"><strong>Status:</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'Pending'}</p>
-  //     </div>
-  //   </div>
-
-  //   <!-- Customer Section -->
-  //   <div class="section-header">Customer</div>
-  //   <div class="info-box">
-  //     <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
-  //     <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
-  //     <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
-  //     <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
-  //     <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
-  //   </div>
-
-  //   <!-- Supplier Section -->
-  //   <div class="section-header">Supplier</div>
-  //   <div class="info-box">
-  //     <p class="name">Panorama Dades</p>
-  //     <p>Georges Dades, Ait ibriren</p>
-  //     <p>Boumalne dades 45150</p>
-  //     <p>0668762022</p>
-  //     <p>Auberge-panorama@hotmail.fr</p>
-  //   </div>
-
-  //   <!-- Invoice Table -->
-  //   <table>
-  //     <thead>
-  //       <tr>
-  //         <th>Designation</th>
-  //         <th class="text-right">Unit Price</th>
-  //         <th class="text-center">Unit</th>
-  //         <th class="text-center">Quantity</th>
-  //         <th class="text-right">Amount</th>
-  //         <th class="text-right">Discount</th>
-  //         <th class="text-right">Amount HT</th>
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  //       ${selectedInvoices.map(inv => {
-  //     const checkIn = new Date(inv.checkIn);
-  //     const checkOut = new Date(inv.checkOut);
-  //     const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-  //     const unitPrice = inv.amount / nights;
-  //     const amountHT = inv.amount * (1 - inv.discount / 100);
-
-  //     return `
-  //           <tr>
-  //             <td>
-  //               <strong>${inv.roomTitle}</strong><br>
-  //             </td>
-  //             <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
-  //             <td class="text-center">U</td>
-  //             <td class="text-center">${nights}</td>
-  //             <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
-  //             <td class="text-right">${inv.discount}%</td>
-  //             <td class="text-right">${amountHT.toFixed(2)} MAD</td>
-  //           </tr>
-  //         `;
-  //   }).join('')}
-  //     </tbody>
-  //   </table>
-
-  //   <!-- Totals -->
-  //   <div class="totals-section">
-  //     <div class="total-row">
-  //       <span>Total HT:</span>
-  //       <span>${totalHT.toFixed(2)} MAD</span>
-  //     </div>
-  //     <div class="total-row">
-  //       <span>TVA:</span>
-  //       <span>${totalTVA.toFixed(2)} MAD</span>
-  //     </div>
-  //     <div class="total-row final">
-  //       <span>TOTAL TTC TO PAY:</span>
-  //       <span>${totalTTC.toFixed(2)} MAD</span>
-  //     </div>
-  //   </div>
-
-  //   <!-- Amount in Words -->
-  //   <div class="amount-words">
-  //     <strong>Amount in words:</strong> ${numberToWords(totalTTC)}
-  //   </div>
-
-  //   <!-- Footer -->
-  //   <div class="footer">
-  //     <p>Thank you for your business!</p>
-  //     <p>Panorama Dades - Your Home Away From Home</p>
-  //   </div>
-  // </body>
-  // </html>
-  //   `;
-  // };
-
-  // FRENSH :
   const generateInvoiceHTML = () => {
     const totalHT = selectedInvoices.reduce((sum, inv) => {
       const amountHT = inv.amount * (1 - inv.discount / 100);
@@ -629,247 +317,247 @@ export default function AdminInvoices() {
 
     const getStatusEmoji = (status) => {
       switch (status?.toLowerCase()) {
-        case 'payé': return '✅';
-        case 'en attente': return '⏳';
-        case 'annulé': return '❌';
+        case 'paid': return '✅';
+        case 'pending': return '⏳';
+        case 'canceled': return '❌';
         default: return '⏳';
       }
     };
 
     return `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Helvetica', 'Arial', sans-serif;
-      padding: 20px;
-      color: #333;
-      line-height: 1.6;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { 
+        font-family: 'Helvetica', 'Arial', sans-serif; 
+        padding: 20px;
+        color: #333;
+        line-height: 1.6;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
 
-    .logo-section {
-      text-align: center;
-      margin-bottom: 14px;
-    }
+      .logo-section {
+        text-align: center;
+        margin-bottom: 14px;
+      }
 
-    .logo-section img {
-      height: 60px;
-    }
+      .logo-section img {
+        height: 60px;
+      }
 
-    .logo-section h1 {
-      font-size: 20px;
-      color: #1e3a8a;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
+      .logo-section h1 {
+        font-size: 20px;
+        color: #1e3a8a;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
 
-    .logo-section .divider {
-      width: 100%;
-      height: 3px;
-      background: #1e3a8a;
-      margin-top: 10px;
-    }
+      .logo-section .divider {
+        width: 100%;
+        height: 3px;
+        background: #1e3a8a;
+        margin-top: 10px;
+      }
 
-    .invoice-info {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-      font-size: 14px;
-    }
+      .invoice-info {
+        display: flex;
+        justify-content: space-between;
+        margin: 8px 0;
+        font-size: 14px;
+      }
 
-    .invoice-left p {
-      margin: 5px 0;
-      color: #4b5563;
-    }
+      .invoice-left p {
+        margin: 5px 0;
+        color: #4b5563;
+      }
 
-    .invoice-right {
-      text-align: right;
-    }
+      .invoice-right {
+        text-align: right;
+      }
 
-    .status-line {
-      font-size: 16px;
-      font-weight: 500;
-    }
+      .status-line {
+        font-size: 16px;
+        font-weight: 500;
+      }
 
-    .section-header {
-      background: #1e3a8a;
-      color: white;
-      padding: 12px 20px;
-      font-size: 16px;
-      font-weight: 600;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
+      .section-header {
+        background: #1e3a8a;
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
 
-    .info-box {
-      border: 1px solid #d1d5db;
-      padding: 8px;
-      margin-bottom: 20px;
-      margin-top: 4px;
-    }
+      .info-box {
+        border: 1px solid #d1d5db;
+        padding: 8px;
+        margin-bottom: 20px;
+        margin-top: 4px;
+      }
 
-    .info-box p {
-      font-size: 14px;
-      color: #4b5563;
-    }
+      .info-box p {
+        font-size: 14px;
+        color: #4b5563;
+      }
 
-    .info-box .name {
-      color: #1e3a8a;
-      font-weight: 600;
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
+      .info-box .name {
+        color: #1e3a8a;
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 30px 0;
-      overflow: hidden;
-      border-radius: 8px;
-    }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 30px 0;
+        overflow: hidden;
+        border-radius: 8px;
+      }
 
-    thead {
-      background: #1e3a8a;
-      color: white;
-    }
+      thead {
+        background: #1e3a8a;
+        color: white;
+      }
 
-    th {
-      padding: 14px 10px;
-      text-align: left;
-      font-size: 13px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+      th {
+        padding: 14px 10px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
 
-    td {
-      padding: 12px 10px;
-      border-bottom: 1px solid #e5e7eb;
-      font-size: 13px;
-      color: #374151;
-    }
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 13px;
+        color: #374151;
+      }
 
-    tbody tr:last-child td {
-      border-bottom: none;
-    }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
 
-    tbody tr {
-      background: white;
-    }
+      tbody tr {
+        background: white;
+      }
 
-    tbody tr:hover {
-      background: #f9fafb;
-    }
+      tbody tr:hover {
+        background: #f9fafb;
+      }
 
-    .text-right { text-align: right; }
-    .text-center { text-align: center; }
+      .text-right { text-align: right; }
+      .text-center { text-align: center; }
 
-    .totals-section {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
+      .totals-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
 
-    .total-row {
-      display: flex;
-      justify-content: space-between;
-      width: 260px;
-      font-size: 13px;
-      color: #374151;
-    }
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        width: 260px;
+        font-size: 13px;
+        color: #374151;
+      }
 
-    .total-row.final {
-      border-top: 2px solid #1e3a8a;
-      margin-top: 2px;
-      font-size: 13px;
-      font-weight: bold;
-      color: #1e3a8a;
-    }
+      .total-row.final {
+        border-top: 2px solid #1e3a8a;
+        margin-top: 2px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #1e3a8a;
+      }
 
-    .amount-words {
-      background: rgb(235, 213, 52, 0.2);
-      padding: 8px;
-      border-radius: 8px;
-      font-style: italic;
-      color: #374151;
-      text-align: start;
-      font-size: 12px;
-      border-left: 4px solid orange;
-      margin-block: 14px;
-    }
+      .amount-words {
+        background: rgb(235, 213, 52, 0.2);
+        padding: 8px;
+        border-radius: 8px;
+        font-style: italic;
+        color: #374151;
+        text-align: start;
+        font-size: 12px;
+        border-left: 4px solid orange;
+        margin-block: 14px;
+      }
 
-    .footer {
-      margin-top: 10px;
-      border-top: 2px solid #e5e7eb;
-      text-align: center;
-      font-size: 10px;
-      color: #9ca3af;
-    }
+      .footer {
+        margin-top: 10px;
+        border-top: 2px solid #e5e7eb;
+        text-align: center;
+        font-size: 10px;
+        color: #9ca3af;
+      }
 
-    .footer p {
-      margin: 4px 0;
-    }
-  </style>
-</head>
-<body>
-  <!-- Logo and Title -->
-  <div class="logo-section">
-    <img src="{{LOGO_BASE64}}" alt="Logo">
-    <h1>Facture</h1>
-    <div class="divider"></div>
-  </div>
-
-  <!-- Invoice Info -->
-  <div class="invoice-info">
-    <div class="invoice-left">
-      <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
-      <p>Gorges Dades, ${new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      .footer p {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Logo and Title -->
+    <div class="logo-section">
+      <img src="{{LOGO_BASE64}}" alt="Logo">
+      <h1>Invoice</h1>
+      <div class="divider"></div>
     </div>
-    <div class="invoice-right">
-      <p class="status-line"><strong>Statut :</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'En attente'}</p>
+
+    <!-- Invoice Info -->
+    <div class="invoice-info">
+      <div class="invoice-left">
+        <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
+        <p>Gorges Dades, ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      </div>
+      <div class="invoice-right">
+        <p class="status-line"><strong>Status:</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'Pending'}</p>
+      </div>
     </div>
-  </div>
 
-  <!-- Customer Section -->
-  <div class="section-header">Client</div>
-  <div class="info-box">
-    <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
-    <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
-    <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
-    <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
-    <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
-  </div>
+    <!-- Customer Section -->
+    <div class="section-header">Customer</div>
+    <div class="info-box">
+      <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
+      <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
+      <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
+      <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
+      <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
+    </div>
 
-  <!-- Supplier Section -->
-  <div class="section-header">Fournisseur</div>
-  <div class="info-box">
-    <p class="name">Panorama Dades</p>
-    <p>Georges Dades, Ait ibriren</p>
-    <p>Boumalne dades 45150</p>
-    <p>0668762022</p>
-    <p>Auberge-panorama@hotmail.fr</p>
-  </div>
+    <!-- Supplier Section -->
+    <div class="section-header">Supplier</div>
+    <div class="info-box">
+      <p class="name">Panorama Dades</p>
+      <p>Georges Dades, Ait ibriren</p>
+      <p>Boumalne dades 45150</p>
+      <p>0668762022</p>
+      <p>Auberge-panorama@hotmail.fr</p>
+    </div>
 
-  <!-- Invoice Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>Désignation</th>
-        <th class="text-right">Prix unitaire</th>
-        <th class="text-center">Unité</th>
-        <th class="text-center">Quantité</th>
-        <th class="text-right">Montant</th>
-        <th class="text-right">Remise</th>
-        <th class="text-right">Montant HT</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${selectedInvoices.map(inv => {
+    <!-- Invoice Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Designation</th>
+          <th class="text-right">Unit Price</th>
+          <th class="text-center">Unit</th>
+          <th class="text-center">Quantity</th>
+          <th class="text-right">Amount</th>
+          <th class="text-right">Discount</th>
+          <th class="text-right">Amount HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${selectedInvoices.map(inv => {
       const checkIn = new Date(inv.checkIn);
       const checkOut = new Date(inv.checkOut);
       const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
@@ -877,51 +565,226 @@ export default function AdminInvoices() {
       const amountHT = inv.amount * (1 - inv.discount / 100);
 
       return `
-          <tr>
-            <td>
-              <strong>${inv.roomTitle}</strong><br>
-            </td>
-            <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
-            <td class="text-center">U</td>
-            <td class="text-center">${nights}</td>
-            <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
-            <td class="text-right">${inv.discount}%</td>
-            <td class="text-right">${amountHT.toFixed(2)} MAD</td>
-          </tr>
-        `;
+            <tr>
+              <td>
+                <strong>${inv.roomTitle}</strong><br>
+              </td>
+              <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
+              <td class="text-center">U</td>
+              <td class="text-center">${nights}</td>
+              <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
+              <td class="text-right">${inv.discount}%</td>
+              <td class="text-right">${amountHT.toFixed(2)} MAD</td>
+            </tr>
+          `;
     }).join('')}
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <!-- Totals -->
-  <div class="totals-section">
-    <div class="total-row">
-      <span>Total HT :</span>
-      <span>${totalHT.toFixed(2)} MAD</span>
+    <!-- Totals -->
+    <div class="totals-section">
+      <div class="total-row">
+        <span>Total HT:</span>
+        <span>${totalHT.toFixed(2)} MAD</span>
+      </div>
+      <div class="total-row">
+        <span>TVA:</span>
+        <span>${totalTVA.toFixed(2)} MAD</span>
+      </div>
+      <div class="total-row final">
+        <span>TOTAL TTC TO PAY:</span>
+        <span>${totalTTC.toFixed(2)} MAD</span>
+      </div>
     </div>
-    <div class="total-row">
-      <span>TVA :</span>
-      <span>${totalTVA.toFixed(2)} MAD</span>
-    </div>
-    <div class="total-row final">
-      <span>TOTAL TTC À PAYER :</span>
-      <span>${totalTTC.toFixed(2)} MAD</span>
-    </div>
-  </div>
 
-  <!-- Amount in Words -->
-  <div class="amount-words">
-    <strong>Montant en lettres :</strong> ${numberToWords(totalTTC)}
-  </div>
+    <!-- Amount in Words -->
+    <div class="amount-words">
+      <strong>Amount in words:</strong> ${numberToWords(totalTTC)}
+    </div>
 
-  <!-- Footer -->
-  <div class="footer">
-    <p>Merci pour votre confiance !</p>
-    <p>Panorama Dades - Votre maison loin de chez vous</p>
-  </div>
+    <!-- Footer -->
+    <div class="footer">
+      <p>Thank you for your business!</p>
+      <p>Panorama Dades - Your Home Away From Home</p>
+    </div>
+  </body>
+  </html>
+    `;
+  };
+
+  const generateInvoiceHTML2 = () => {
+    const totalHT = selectedInvoices.reduce((sum, inv) => {
+      const amountHT = inv.amount * (1 - inv.discount / 100);
+      return sum + amountHT;
+    }, 0);
+
+    const totalTVA = selectedInvoices.reduce((sum, inv) => {
+      const amountHT = inv.amount * (1 - inv.discount / 100);
+      const tvaAmount = amountHT * (inv.tva / 100);
+      return sum + tvaAmount;
+    }, 0);
+
+    const totalTTC = totalHT + totalTVA;
+
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    padding: 20px;
+    color: #333;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  h1 { text-align:center; color:#1e3a8a; }
+  table {
+    width:100%;
+    border-collapse: collapse;
+    margin-top:20px;
+  }
+  th, td {
+    border:1px solid #ddd;
+    padding:10px;
+    font-size:13px;
+  }
+  th {
+    background:#1e3a8a;
+    color:white;
+  }
+  .text-right { text-align:right; }
+  .totaux {
+    margin-top:20px;
+    text-align:right;
+  }
+  .montant-lettres {
+    margin-top:15px;
+    padding:10px;
+    background:#fef3c7;
+    font-style:italic;
+  }
+  .footer {
+    margin-top:30px;
+    font-size:12px;
+    text-align:center;
+    color:#777;
+  }
+</style>
+</head>
+<body>
+
+<h1>FACTURE</h1>
+
+<p><strong>Code :</strong> ${selectedInvoices[0]?.code}</p>
+<p><strong>Date :</strong> ${new Date().toLocaleDateString('fr-FR')}</p>
+<p><strong>Statut :</strong> ${getStatusEmoji2(selectedInvoices[0]?.status)}</p>
+
+<h3>Client</h3>
+<p>
+${selectedInvoices[0]?.customerName}<br>
+${selectedInvoices[0]?.customerEmail}<br>
+${selectedInvoices[0]?.customerPhone}<br>
+${selectedInvoices[0]?.customerAddress}<br>
+${selectedInvoices[0]?.customerCountry}
+</p>
+
+<h3>Fournisseur</h3>
+<p>
+Panorama Dades<br>
+Gorges Dades, Ait Ibriren<br>
+Boumalne Dades 45150<br>
+0668762022<br>
+Auberge-panorama@hotmail.fr
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Désignation</th>
+<th>Prix Unitaire</th>
+<th>Quantité</th>
+<th>Montant Brut</th>
+<th>Remise</th>
+<th>Montant HT</th>
+</tr>
+</thead>
+<tbody>
+${selectedInvoices.map(inv => {
+      const checkIn = new Date(inv.checkIn);
+      const checkOut = new Date(inv.checkOut);
+      const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+      const unitPrice = inv.amount / nights;
+      const amountHT = inv.amount * (1 - inv.discount / 100);
+
+      return `
+<tr>
+<td>${inv.roomTitle}</td>
+<td class="text-right">${unitPrice.toFixed(2)} MAD</td>
+<td class="text-right">${nights}</td>
+<td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
+<td class="text-right">${inv.discount}%</td>
+<td class="text-right">${amountHT.toFixed(2)} MAD</td>
+</tr>
+`;
+    }).join('')}
+</tbody>
+</table>
+
+<div class="totaux">
+<p><strong>Total HT :</strong> ${totalHT.toFixed(2)} MAD</p>
+<p><strong>TVA :</strong> ${totalTVA.toFixed(2)} MAD</p>
+<p><strong>Total TTC :</strong> ${totalTTC.toFixed(2)} MAD</p>
+</div>
+
+<div class="montant-lettres">
+<strong>Montant en lettres :</strong> ${numberToWords2(totalTTC)}
+</div>
+
+<div class="footer">
+Merci pour votre confiance.<br>
+Panorama Dades - Votre maison loin de chez vous
+</div>
+
 </body>
 </html>
-  `;
+`;
+  };
+
+  const numberToWords2 = (num) => {
+    const ones = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf'];
+    const tens = ['', '', 'Vingt', 'Trente', 'Quarante', 'Cinquante', 'Soixante', 'Soixante-Dix', 'Quatre-Vingt', 'Quatre-Vingt-Dix'];
+    const teens = ['Dix', 'Onze', 'Douze', 'Treize', 'Quatorze', 'Quinze', 'Seize', 'Dix-Sept', 'Dix-Huit', 'Dix-Neuf'];
+
+    if (num === 0) return 'Zéro';
+
+    const convert = (n) => {
+      if (n < 10) return ones[n];
+      if (n < 20) return teens[n - 10];
+      if (n < 100) return tens[Math.floor(n / 10)] + (n % 10 ? ' ' + ones[n % 10] : '');
+      if (n < 1000) return ones[Math.floor(n / 100)] + ' Cent' + (n % 100 ? ' ' + convert(n % 100) : '');
+      if (n < 1000000) return convert(Math.floor(n / 1000)) + ' Mille' + (n % 1000 ? ' ' + convert(n % 1000) : '');
+      return convert(Math.floor(n / 1000000)) + ' Million' + (n % 1000000 ? ' ' + convert(n % 1000000) : '');
+    };
+
+    const dirhams = Math.floor(num);
+    const centimes = Math.round((num - dirhams) * 100);
+
+    let result = convert(dirhams) + ' Dirham' + (dirhams > 1 ? 's' : '');
+    if (centimes > 0) {
+      result += ' et ' + convert(centimes) + ' Centime' + (centimes > 1 ? 's' : '');
+    }
+    return result;
+  };
+
+  const getStatusEmoji2 = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'paid': return '✅ Payée';
+      case 'pending': return '⏳ En attente';
+      case 'canceled': return '❌ Annulée';
+      default: return '⏳ En attente';
+    }
   };
 
   const getStatusStyle = (status) => {
