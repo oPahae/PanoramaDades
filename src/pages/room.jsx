@@ -17,6 +17,7 @@ export default function RoomDetail() {
     email: '',
     enquiry: '',
     agreeTerms: false,
+    room: '',
   });
 
   const [currentRoom, setCurrentRoom] = useState(null);
@@ -32,6 +33,10 @@ export default function RoomDetail() {
         const res = await fetch(`/api/rooms/getOne?id=${id}`);
         const data = await res.json();
         setCurrentRoom(data);
+        setFormData({
+          ...formData,
+          room: data.title,
+        })
       } catch (error) {
         console.error('Failed to fetch room', error);
       } finally {
@@ -106,6 +111,7 @@ export default function RoomDetail() {
         fullName: '',
         email: '',
         enquiry: '',
+        room: '',
       });
     } catch (error) {
       console.error('Error:', error.message);

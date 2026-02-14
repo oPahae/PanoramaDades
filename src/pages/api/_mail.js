@@ -1,9 +1,9 @@
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  const { fullName, email, enquiry } = req.body;
+  const { fullName, email, enquiry, room } = req.body;
 
-  if (!fullName || !email || !enquiry) {
+  if (!fullName || !email || !enquiry || !room) {
     return res.status(400).json({ status: "failed", message: "Missing data" });
   }
 
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
                     <!-- Header -->
                     <tr>
                       <td style="background:#003366; padding:25px; text-align:center;">
-                        <h2 style="color:#ffffff; margin:0;">New Contact Enquiry</h2>
+                        <h2 style="color:#ffffff; margin:0;">New Room Enquiry</h2>
                       </td>
                     </tr>
 
@@ -56,11 +56,12 @@ export default async function handler(req, res) {
                       <td style="padding:30px;">
                         
                         <p style="font-size:15px; color:#555;">
-                          You have received a new message from your website contact form.
+                          You have received a new room enquiry from your website.
                         </p>
 
                         <table width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
                           
+                          <!-- Full Name -->
                           <tr>
                             <td style="padding:12px 0; font-weight:bold; color:#003366;">
                               Full Name:
@@ -72,6 +73,7 @@ export default async function handler(req, res) {
                             </td>
                           </tr>
 
+                          <!-- Email -->
                           <tr>
                             <td style="padding:12px 0; font-weight:bold; color:#003366;">
                               Email Address:
@@ -83,6 +85,19 @@ export default async function handler(req, res) {
                             </td>
                           </tr>
 
+                          <!-- Room -->
+                          <tr>
+                            <td style="padding:12px 0; font-weight:bold; color:#003366;">
+                              Selected Room:
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="padding-bottom:15px; color:#333; background:#eef4fb; padding:12px; border-radius:6px;">
+                              ${room}
+                            </td>
+                          </tr>
+
+                          <!-- Message -->
                           <tr>
                             <td style="padding:12px 0; font-weight:bold; color:#003366;">
                               Message:
@@ -120,7 +135,7 @@ export default async function handler(req, res) {
 
           </body>
           </html>
-        `,
+          `,
       });
 
       return res.status(200).json({ message: 'Email sent!' });
