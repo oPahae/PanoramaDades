@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Eye, CheckCircle, XCircle, Download, Printer, Search, Filter, ChevronLeft, ChevronRight, AlertCircle, X, Receipt } from 'lucide-react';
+import { Eye, CheckCircle, XCircle, Download, Printer, Search, Filter, ChevronLeft, ChevronRight, AlertCircle, X, Coins } from 'lucide-react';
 import { verifyAuth } from '@/middlewares/rootAuth';
 
 export default function AdminInvoices() {
@@ -300,6 +300,319 @@ export default function AdminInvoices() {
     return result;
   };
 
+  // ENG :
+  // const generateInvoiceHTML = () => {
+  //   const totalHT = selectedInvoices.reduce((sum, inv) => {
+  //     const amountHT = inv.amount * (1 - inv.discount / 100);
+  //     return sum + amountHT;
+  //   }, 0);
+
+  //   const totalTVA = selectedInvoices.reduce((sum, inv) => {
+  //     const amountHT = inv.amount * (1 - inv.discount / 100);
+  //     const tvaAmount = amountHT * (inv.tva / 100);
+  //     return sum + tvaAmount;
+  //   }, 0);
+
+  //   const totalTTC = totalHT + totalTVA;
+
+  //   const getStatusEmoji = (status) => {
+  //     switch (status?.toLowerCase()) {
+  //       case 'paid': return '✅';
+  //       case 'pending': return '⏳';
+  //       case 'canceled': return '❌';
+  //       default: return '⏳';
+  //     }
+  //   };
+
+  //   return `
+  // <!DOCTYPE html>
+  // <html>
+  // <head>
+  //   <meta charset="UTF-8">
+  //   <style>
+  //     * { margin: 0; padding: 0; box-sizing: border-box; }
+  //     body { 
+  //       font-family: 'Helvetica', 'Arial', sans-serif; 
+  //       padding: 20px;
+  //       color: #333;
+  //       line-height: 1.6;
+  //       max-width: 1000px;
+  //       margin: 0 auto;
+  //     }
+
+  //     .logo-section {
+  //       text-align: center;
+  //       margin-bottom: 14px;
+  //     }
+
+  //     .logo-section img {
+  //       height: 60px;
+  //     }
+
+  //     .logo-section h1 {
+  //       font-size: 20px;
+  //       color: #1e3a8a;
+  //       margin-bottom: 15px;
+  //       font-weight: 600;
+  //     }
+
+  //     .logo-section .divider {
+  //       width: 100%;
+  //       height: 3px;
+  //       background: #1e3a8a;
+  //       margin-top: 10px;
+  //     }
+
+  //     .invoice-info {
+  //       display: flex;
+  //       justify-content: space-between;
+  //       margin: 8px 0;
+  //       font-size: 14px;
+  //     }
+
+  //     .invoice-left p {
+  //       margin: 5px 0;
+  //       color: #4b5563;
+  //     }
+
+  //     .invoice-right {
+  //       text-align: right;
+  //     }
+
+  //     .status-line {
+  //       font-size: 16px;
+  //       font-weight: 500;
+  //     }
+
+  //     .section-header {
+  //       background: #1e3a8a;
+  //       color: white;
+  //       padding: 12px 20px;
+  //       font-size: 16px;
+  //       font-weight: 600;
+  //       margin-top: 0;
+  //       margin-bottom: 0;
+  //     }
+
+  //     .info-box {
+  //       border: 1px solid #d1d5db;
+  //       padding: 8px;
+  //       margin-bottom: 20px;
+  //       margin-top: 4px;
+  //     }
+
+  //     .info-box p {
+  //       font-size: 14px;
+  //       color: #4b5563;
+  //     }
+
+  //     .info-box .name {
+  //       color: #1e3a8a;
+  //       font-weight: 600;
+  //       font-size: 16px;
+  //       margin-bottom: 4px;
+  //     }
+
+  //     table {
+  //       width: 100%;
+  //       border-collapse: collapse;
+  //       margin: 30px 0;
+  //       overflow: hidden;
+  //       border-radius: 8px;
+  //     }
+
+  //     thead {
+  //       background: #1e3a8a;
+  //       color: white;
+  //     }
+
+  //     th {
+  //       padding: 14px 10px;
+  //       text-align: left;
+  //       font-size: 13px;
+  //       font-weight: 600;
+  //       text-transform: uppercase;
+  //       letter-spacing: 0.5px;
+  //     }
+
+  //     td {
+  //       padding: 12px 10px;
+  //       border-bottom: 1px solid #e5e7eb;
+  //       font-size: 13px;
+  //       color: #374151;
+  //     }
+
+  //     tbody tr:last-child td {
+  //       border-bottom: none;
+  //     }
+
+  //     tbody tr {
+  //       background: white;
+  //     }
+
+  //     tbody tr:hover {
+  //       background: #f9fafb;
+  //     }
+
+  //     .text-right { text-align: right; }
+  //     .text-center { text-align: center; }
+
+  //     .totals-section {
+  //       display: flex;
+  //       flex-direction: column;
+  //       align-items: flex-end;
+  //     }
+
+  //     .total-row {
+  //       display: flex;
+  //       justify-content: space-between;
+  //       width: 200px;
+  //       font-size: 13px;
+  //       color: #374151;
+  //     }
+
+  //     .total-row.final {
+  //       border-top: 2px solid #1e3a8a;
+  //       margin-top: 2px;
+  //       font-size: 13px;
+  //       font-weight: bold;
+  //       color: #1e3a8a;
+  //     }
+
+  //     .amount-words {
+  //       background: rgb(235, 213, 52, 0.2);
+  //       padding: 8px;
+  //       border-radius: 8px;
+  //       font-style: italic;
+  //       color: #374151;
+  //       text-align: start;
+  //       font-size: 12px;
+  //       border-left: 4px solid orange;
+  //       margin-block: 14px;
+  //     }
+
+  //     .footer {
+  //       margin-top: 10px;
+  //       border-top: 2px solid #e5e7eb;
+  //       text-align: center;
+  //       font-size: 10px;
+  //       color: #9ca3af;
+  //     }
+
+  //     .footer p {
+  //       margin: 4px 0;
+  //     }
+  //   </style>
+  // </head>
+  // <body>
+  //   <!-- Logo and Title -->
+  //   <div class="logo-section">
+  //     <img src="{{LOGO_BASE64}}" alt="Logo">
+  //     <h1>Invoice</h1>
+  //     <div class="divider"></div>
+  //   </div>
+
+  //   <!-- Invoice Info -->
+  //   <div class="invoice-info">
+  //     <div class="invoice-left">
+  //       <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
+  //       <p>Gorges Dades, ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+  //     </div>
+  //     <div class="invoice-right">
+  //       <p class="status-line"><strong>Status:</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'Pending'}</p>
+  //     </div>
+  //   </div>
+
+  //   <!-- Customer Section -->
+  //   <div class="section-header">Customer</div>
+  //   <div class="info-box">
+  //     <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
+  //     <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
+  //     <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
+  //     <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
+  //     <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
+  //   </div>
+
+  //   <!-- Supplier Section -->
+  //   <div class="section-header">Supplier</div>
+  //   <div class="info-box">
+  //     <p class="name">Panorama Dades</p>
+  //     <p>Georges Dades, Ait ibriren</p>
+  //     <p>Boumalne dades 45150</p>
+  //     <p>0668762022</p>
+  //     <p>Auberge-panorama@hotmail.fr</p>
+  //   </div>
+
+  //   <!-- Invoice Table -->
+  //   <table>
+  //     <thead>
+  //       <tr>
+  //         <th>Designation</th>
+  //         <th class="text-right">Unit Price</th>
+  //         <th class="text-center">Unit</th>
+  //         <th class="text-center">Quantity</th>
+  //         <th class="text-right">Amount</th>
+  //         <th class="text-right">Discount</th>
+  //         <th class="text-right">Amount HT</th>
+  //       </tr>
+  //     </thead>
+  //     <tbody>
+  //       ${selectedInvoices.map(inv => {
+  //     const checkIn = new Date(inv.checkIn);
+  //     const checkOut = new Date(inv.checkOut);
+  //     const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+  //     const unitPrice = inv.amount / nights;
+  //     const amountHT = inv.amount * (1 - inv.discount / 100);
+
+  //     return `
+  //           <tr>
+  //             <td>
+  //               <strong>${inv.roomTitle}</strong><br>
+  //             </td>
+  //             <td class="text-right">$${unitPrice.toFixed(2)}</td>
+  //             <td class="text-center">U</td>
+  //             <td class="text-center">${nights}</td>
+  //             <td class="text-right">$${parseFloat(inv.amount).toFixed(2)}</td>
+  //             <td class="text-right">${inv.discount}%</td>
+  //             <td class="text-right">$${amountHT.toFixed(2)}</td>
+  //           </tr>
+  //         `;
+  //   }).join('')}
+  //     </tbody>
+  //   </table>
+
+  //   <!-- Totals -->
+  //   <div class="totals-section">
+  //     <div class="total-row">
+  //       <span>Total HT:</span>
+  //       <span>$${totalHT.toFixed(2)}</span>
+  //     </div>
+  //     <div class="total-row">
+  //       <span>TVA:</span>
+  //       <span>$${totalTVA.toFixed(2)}</span>
+  //     </div>
+  //     <div class="total-row final">
+  //       <span>TOTAL TTC TO PAY:</span>
+  //       <span>$${totalTTC.toFixed(2)}</span>
+  //     </div>
+  //   </div>
+
+  //   <!-- Amount in Words -->
+  //   <div class="amount-words">
+  //     <strong>Amount in words:</strong> ${numberToWords(totalTTC)}
+  //   </div>
+
+  //   <!-- Footer -->
+  //   <div class="footer">
+  //     <p>Thank you for your business!</p>
+  //     <p>Panorama Dades - Your Home Away From Home</p>
+  //   </div>
+  // </body>
+  // </html>
+  //   `;
+  // };
+
+  // FR :
   const generateInvoiceHTML = () => {
     const totalHT = selectedInvoices.reduce((sum, inv) => {
       const amountHT = inv.amount * (1 - inv.discount / 100);
@@ -316,9 +629,9 @@ export default function AdminInvoices() {
 
     const getStatusEmoji = (status) => {
       switch (status?.toLowerCase()) {
-        case 'paid': return '✅';
-        case 'pending': return '⏳';
-        case 'canceled': return '❌';
+        case 'payé': return '✅';
+        case 'en attente': return '⏳';
+        case 'annulé': return '❌';
         default: return '⏳';
       }
     };
@@ -330,59 +643,59 @@ export default function AdminInvoices() {
   <meta charset="UTF-8">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Helvetica', 'Arial', sans-serif; 
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
       padding: 20px;
       color: #333;
       line-height: 1.6;
       max-width: 1000px;
       margin: 0 auto;
     }
-    
+
     .logo-section {
       text-align: center;
       margin-bottom: 14px;
     }
-    
+
     .logo-section img {
       height: 60px;
     }
-    
+
     .logo-section h1 {
       font-size: 20px;
       color: #1e3a8a;
       margin-bottom: 15px;
       font-weight: 600;
     }
-    
+
     .logo-section .divider {
       width: 100%;
       height: 3px;
       background: #1e3a8a;
       margin-top: 10px;
     }
-    
+
     .invoice-info {
       display: flex;
       justify-content: space-between;
       margin: 8px 0;
       font-size: 14px;
     }
-    
+
     .invoice-left p {
       margin: 5px 0;
       color: #4b5563;
     }
-    
+
     .invoice-right {
       text-align: right;
     }
-    
+
     .status-line {
       font-size: 16px;
       font-weight: 500;
     }
-    
+
     .section-header {
       background: #1e3a8a;
       color: white;
@@ -392,26 +705,26 @@ export default function AdminInvoices() {
       margin-top: 0;
       margin-bottom: 0;
     }
-    
+
     .info-box {
       border: 1px solid #d1d5db;
       padding: 8px;
       margin-bottom: 20px;
       margin-top: 4px;
     }
-    
+
     .info-box p {
       font-size: 14px;
       color: #4b5563;
     }
-    
+
     .info-box .name {
       color: #1e3a8a;
       font-weight: 600;
       font-size: 16px;
       margin-bottom: 4px;
     }
-    
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -419,12 +732,12 @@ export default function AdminInvoices() {
       overflow: hidden;
       border-radius: 8px;
     }
-    
+
     thead {
       background: #1e3a8a;
       color: white;
     }
-    
+
     th {
       padding: 14px 10px;
       text-align: left;
@@ -433,35 +746,35 @@ export default function AdminInvoices() {
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    
+
     td {
       padding: 12px 10px;
       border-bottom: 1px solid #e5e7eb;
       font-size: 13px;
       color: #374151;
     }
-    
+
     tbody tr:last-child td {
       border-bottom: none;
     }
-    
+
     tbody tr {
       background: white;
     }
-    
+
     tbody tr:hover {
       background: #f9fafb;
     }
-    
+
     .text-right { text-align: right; }
     .text-center { text-align: center; }
-    
+
     .totals-section {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
     }
-    
+
     .total-row {
       display: flex;
       justify-content: space-between;
@@ -469,7 +782,7 @@ export default function AdminInvoices() {
       font-size: 13px;
       color: #374151;
     }
-    
+
     .total-row.final {
       border-top: 2px solid #1e3a8a;
       margin-top: 2px;
@@ -477,7 +790,7 @@ export default function AdminInvoices() {
       font-weight: bold;
       color: #1e3a8a;
     }
-    
+
     .amount-words {
       background: rgb(235, 213, 52, 0.2);
       padding: 8px;
@@ -489,7 +802,7 @@ export default function AdminInvoices() {
       border-left: 4px solid orange;
       margin-block: 14px;
     }
-    
+
     .footer {
       margin-top: 10px;
       border-top: 2px solid #e5e7eb;
@@ -497,7 +810,7 @@ export default function AdminInvoices() {
       font-size: 10px;
       color: #9ca3af;
     }
-    
+
     .footer p {
       margin: 4px 0;
     }
@@ -507,7 +820,7 @@ export default function AdminInvoices() {
   <!-- Logo and Title -->
   <div class="logo-section">
     <img src="{{LOGO_BASE64}}" alt="Logo">
-    <h1>Invoice</h1>
+    <h1>Facture</h1>
     <div class="divider"></div>
   </div>
 
@@ -515,15 +828,15 @@ export default function AdminInvoices() {
   <div class="invoice-info">
     <div class="invoice-left">
       <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
-      <p>Gorges Dades, ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+      <p>Gorges Dades, ${new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
     </div>
     <div class="invoice-right">
-      <p class="status-line"><strong>Status:</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'Pending'}</p>
+      <p class="status-line"><strong>Statut :</strong> ${getStatusEmoji(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status || 'En attente'}</p>
     </div>
   </div>
 
   <!-- Customer Section -->
-  <div class="section-header">Customer</div>
+  <div class="section-header">Client</div>
   <div class="info-box">
     <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
     <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
@@ -533,7 +846,7 @@ export default function AdminInvoices() {
   </div>
 
   <!-- Supplier Section -->
-  <div class="section-header">Supplier</div>
+  <div class="section-header">Fournisseur</div>
   <div class="info-box">
     <p class="name">Panorama Dades</p>
     <p>Georges Dades, Ait ibriren</p>
@@ -546,13 +859,13 @@ export default function AdminInvoices() {
   <table>
     <thead>
       <tr>
-        <th>Designation</th>
-        <th class="text-right">Unit Price</th>
-        <th class="text-center">Unit</th>
-        <th class="text-center">Quantity</th>
-        <th class="text-right">Amount</th>
-        <th class="text-right">Discount</th>
-        <th class="text-right">Amount HT</th>
+        <th>Désignation</th>
+        <th class="text-right">Prix unitaire</th>
+        <th class="text-center">Unité</th>
+        <th class="text-center">Quantité</th>
+        <th class="text-right">Montant</th>
+        <th class="text-right">Remise</th>
+        <th class="text-right">Montant HT</th>
       </tr>
     </thead>
     <tbody>
@@ -583,28 +896,28 @@ export default function AdminInvoices() {
   <!-- Totals -->
   <div class="totals-section">
     <div class="total-row">
-      <span>Total HT:</span>
+      <span>Total HT :</span>
       <span>$${totalHT.toFixed(2)}</span>
     </div>
     <div class="total-row">
-      <span>TVA:</span>
+      <span>TVA :</span>
       <span>$${totalTVA.toFixed(2)}</span>
     </div>
     <div class="total-row final">
-      <span>TOTAL TTC TO PAY:</span>
+      <span>TOTAL TTC À PAYER :</span>
       <span>$${totalTTC.toFixed(2)}</span>
     </div>
   </div>
 
   <!-- Amount in Words -->
   <div class="amount-words">
-    <strong>Amount in words:</strong> ${numberToWords(totalTTC)}
+    <strong>Montant en lettres :</strong> ${numberToWords(totalTTC)}
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <p>Thank you for your business!</p>
-    <p>Panorama Dades - Your Home Away From Home</p>
+    <p>Merci pour votre confiance !</p>
+    <p>Panorama Dades - Votre maison loin de chez vous</p>
   </div>
 </body>
 </html>
@@ -820,7 +1133,7 @@ export default function AdminInvoices() {
             </div>
           ) : filteredInvoices.length === 0 ? (
             <div className="bg-white/80 backdrop-blur-sm border-2 border-stone-200 rounded-2xl p-12 text-center">
-              <Receipt className="w-16 h-16 text-stone-400 mx-auto mb-4" />
+              <Coins className="w-16 h-16 text-stone-400 mx-auto mb-4" />
               <p className="text-stone-600 text-lg font-light">No invoices found</p>
             </div>
           ) : (
@@ -844,7 +1157,7 @@ export default function AdminInvoices() {
                           Reservation
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
-                          Amount
+                          Amount (MAD)
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                           Status
@@ -1094,7 +1407,7 @@ export default function AdminInvoices() {
                   Amount <span className="text-rose-600">*</span>
                 </label>
                 <div className="relative">
-                  <Receipt className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-400" />
+                  <Coins className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-400" />
                   <input
                     type="number"
                     step="0.01"

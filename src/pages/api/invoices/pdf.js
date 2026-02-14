@@ -54,6 +54,7 @@ export default async function handler(req, res) {
     res.setHeader('Content-Length', pdfBuffer.length);
     res.status(200).end(pdfBuffer);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Failed to generate PDF' });
   }
 }

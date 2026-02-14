@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Plus, Edit, X, Search, Filter, ChevronLeft, ChevronRight, XCircle, CheckCircle, Calendar, Receipt, Percent, AlertCircle, User, Building2, Download, CheckCheck } from 'lucide-react';
+import { Plus, Edit, X, Search, Filter, ChevronLeft, ChevronRight, XCircle, CheckCircle, Calendar, Coins, Percent, AlertCircle, User, Building2, Download, CheckCheck } from 'lucide-react';
 import Select from 'react-select';
 import { verifyAuth } from '@/middlewares/rootAuth';
 
@@ -579,7 +579,7 @@ export default function AdminReservations() {
                           Check-out
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
-                          Amount
+                          Amount (MAD)
                         </th>
                         <th className="px-6 py-4 text-left text-xs font-bold text-amber-900 uppercase tracking-wider">
                           Status
@@ -906,7 +906,7 @@ export default function AdminReservations() {
                     Amount <span className="text-rose-600">*</span>
                   </label>
                   <div className="relative">
-                    <Receipt className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-400" />
+                    <Coins className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-stone-400" />
                     <input
                       type="number"
                       step="0.01"
