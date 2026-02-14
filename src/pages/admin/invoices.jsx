@@ -612,7 +612,7 @@ export default function AdminInvoices() {
   //   `;
   // };
 
-  // FR :
+  // FRENSH :
   const generateInvoiceHTML = () => {
     const totalHT = selectedInvoices.reduce((sum, inv) => {
       const amountHT = inv.amount * (1 - inv.discount / 100);
