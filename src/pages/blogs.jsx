@@ -190,7 +190,7 @@ export default function BlogsPage() {
             </section>
 
             {/* Featured Section */}
-            <section className="py-20 px-8 lg:px-16 bg-stone-900 text-white relative overflow-hidden">
+            {/* <section className="py-20 px-8 lg:px-16 bg-stone-900 text-white relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=1920')] bg-cover bg-center opacity-10" />
 
                 <div className="max-w-[1400px] mx-auto relative z-10">
@@ -241,7 +241,7 @@ export default function BlogsPage() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Back to Top */}
             <div className="py-12 text-center">

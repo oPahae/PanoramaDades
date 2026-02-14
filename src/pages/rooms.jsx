@@ -448,7 +448,7 @@ export default function Rooms() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="/booking"
+              href="/rooms"
               className="group relative px-10 py-5 overflow-hidden rounded font-medium tracking-wider uppercase"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-800" />
