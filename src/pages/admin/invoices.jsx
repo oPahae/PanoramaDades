@@ -143,7 +143,7 @@ export default function AdminInvoices() {
 
     try {
       setProcessing(true);
-      const html = generateInvoiceHTML22();
+      const html = generateInvoiceHTML2();
 
       const response = await fetch('/api/invoices/pdf', {
         method: 'POST',
@@ -225,7 +225,7 @@ export default function AdminInvoices() {
 
     try {
       setProcessing(true);
-      const html = generateInvoiceHTML22();
+      const html = generateInvoiceHTML2();
 
       const response = await fetch('/api/invoices/pdf', {
         method: 'POST',
