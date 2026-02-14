@@ -612,180 +612,356 @@ export default function AdminInvoices() {
     `;
   };
 
-  const generateInvoiceHTML2 = () => {
-    const totalHT = selectedInvoices.reduce((sum, inv) => {
-      const amountHT = inv.amount * (1 - inv.discount / 100);
-      return sum + amountHT;
-    }, 0);
-
-    const totalTVA = selectedInvoices.reduce((sum, inv) => {
-      const amountHT = inv.amount * (1 - inv.discount / 100);
-      const tvaAmount = amountHT * (inv.tva / 100);
-      return sum + tvaAmount;
-    }, 0);
-
-    const totalTTC = totalHT + totalTVA;
-
-    return `
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<style>
-/* ⚠️ CSS IDENTIQUE — NON MODIFIÉ */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-  font-family: 'Helvetica', 'Arial', sans-serif; 
-  padding: 20px;
-  color: #333;
-  line-height: 1.6;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-/* ... Garde exactement ton CSS original ici sans modification ... */
-</style>
-</head>
-<body>
-
-<div class="logo-section">
-  <img src="{{LOGO_BASE64}}" alt="Logo">
-  <h1>Facture</h1>
-  <div class="divider"></div>
-</div>
-
-<div class="invoice-info">
-  <div class="invoice-left">
-    <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
-    <p>Gorges du Dadès, ${new Date().toLocaleDateString('fr-FR')}</p>
-  </div>
-  <div class="invoice-right">
-    <p class="status-line">
-      <strong>Statut :</strong> 
-      ${getStatusEmoji2(selectedInvoices[0]?.status)} 
-      ${selectedInvoices[0]?.status || 'En attente'}
-    </p>
-  </div>
-</div>
-
-<div class="section-header">Client</div>
-<div class="info-box">
-  <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
-  <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
-  <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
-  <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
-  <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
-</div>
-
-<div class="section-header">Fournisseur</div>
-<div class="info-box">
-  <p class="name">Panorama Dades</p>
-  <p>Gorges du Dadès, Ait Ibriren</p>
-  <p>Boumalne Dadès 45150</p>
-  <p>0668762022</p>
-  <p>Auberge-panorama@hotmail.fr</p>
-</div>
-
-<table>
-<thead>
-<tr>
-  <th>Désignation</th>
-  <th class="text-right">Prix Unitaire</th>
-  <th class="text-center">Unité</th>
-  <th class="text-center">Quantité</th>
-  <th class="text-right">Montant</th>
-  <th class="text-right">Remise</th>
-  <th class="text-right">Montant HT</th>
-</tr>
-</thead>
-<tbody>
-${selectedInvoices.map(inv => {
-      const checkIn = new Date(inv.checkIn);
-      const checkOut = new Date(inv.checkOut);
-      const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-      const unitPrice = inv.amount / nights;
-      const amountHT = inv.amount * (1 - inv.discount / 100);
-
-      return `
-  <tr>
-    <td><strong>${inv.roomTitle}</strong></td>
-    <td class="text-right">${unitPrice.toFixed(2)} MAD</td>
-    <td class="text-center">U</td>
-    <td class="text-center">${nights}</td>
-    <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
-    <td class="text-right">${inv.discount}%</td>
-    <td class="text-right">${amountHT.toFixed(2)} MAD</td>
-  </tr>`;
-    }).join('')}
-</tbody>
-</table>
-
-<div class="totals-section">
-  <div class="total-row">
-    <span>Total HT :</span>
-    <span>${totalHT.toFixed(2)} MAD</span>
-  </div>
-  <div class="total-row">
-    <span>TVA :</span>
-    <span>${totalTVA.toFixed(2)} MAD</span>
-  </div>
-  <div class="total-row final">
-    <span>TOTAL TTC À PAYER :</span>
-    <span>${totalTTC.toFixed(2)} MAD</span>
-  </div>
-</div>
-
-<div class="amount-words">
-  <strong>Montant en lettres :</strong> ${numberToWords2(totalTTC)}
-</div>
-
-<div class="footer">
-  <p>Merci pour votre confiance !</p>
-  <p>Panorama Dades - Votre maison loin de chez vous</p>
-</div>
-
-</body>
-</html>
-`;
-  };
-
-  const numberToWords2 = (num) => {
-    const ones = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf'];
-    const tens = ['', '', 'Vingt', 'Trente', 'Quarante', 'Cinquante', 'Soixante', 'Soixante', 'Quatre-vingt', 'Quatre-vingt'];
-    const teens = ['Dix', 'Onze', 'Douze', 'Treize', 'Quatorze', 'Quinze', 'Seize', 'Dix-sept', 'Dix-huit', 'Dix-neuf'];
+  const nombreEnLettres2 = (num) => {
+    const unites = ['', 'Un', 'Deux', 'Trois', 'Quatre', 'Cinq', 'Six', 'Sept', 'Huit', 'Neuf'];
+    const dizaines = ['', '', 'Vingt', 'Trente', 'Quarante', 'Cinquante', 'Soixante', 'Soixante', 'Quatre-vingt', 'Quatre-vingt'];
+    const adolescents = ['Dix', 'Onze', 'Douze', 'Treize', 'Quatorze', 'Quinze', 'Seize', 'Dix-sept', 'Dix-huit', 'Dix-neuf'];
 
     if (num === 0) return 'Zéro';
 
-    const convert = (n) => {
-      if (n < 10) return ones[n];
-      if (n < 20) return teens[n - 10];
+    const convertir = (n) => {
+      if (n < 10) return unites[n];
+      if (n < 20) return adolescents[n - 10];
       if (n < 100) {
-        if (n < 70) return tens[Math.floor(n / 10)] + (n % 10 ? '-' + ones[n % 10] : '');
-        if (n < 80) return 'Soixante-' + convert(n - 60);
-        if (n < 100) return 'Quatre-vingt' + (n === 80 ? '' : '-' + convert(n - 80));
+        const dix = Math.floor(n / 10);
+        const unite = n % 10;
+        if (dix === 7 || dix === 9) {
+          return dizaines[dix] + '-' + (unite === 1 ? 'et-' + unites[unite] : unites[unite]);
+        } else if (dix === 8) {
+          return 'Quatre-' + (unite === 0 ? 'vingts' : 'vingt-' + unites[unite]);
+        } else {
+          return dizaines[dix] + (unite ? '-' + unites[unite] : '');
+        }
       }
-      if (n < 1000) return ones[Math.floor(n / 100)] + ' Cent' + (n % 100 ? ' ' + convert(n % 100) : '');
-      if (n < 1000000) return convert(Math.floor(n / 1000)) + ' Mille' + (n % 1000 ? ' ' + convert(n % 1000) : '');
-      return convert(Math.floor(n / 1000000)) + ' Million' + (n % 1000000 ? ' ' + convert(n % 1000000) : '');
+      if (n < 1000) {
+        return (n === 1 ? '' : unites[Math.floor(n / 100)] + ' ') + 'Cent' + (n % 100 ? ' ' + convertir(n % 100) : '');
+      }
+      if (n < 1000000) {
+        return convertir(Math.floor(n / 1000)) + ' Mille' + (n % 1000 ? ' ' + convertir(n % 1000) : '');
+      }
+      return convertir(Math.floor(n / 1000000)) + ' Million' + (n % 1000000 ? ' ' + convertir(n % 1000000) : '');
     };
 
     const dirhams = Math.floor(num);
     const centimes = Math.round((num - dirhams) * 100);
 
-    let result = convert(dirhams) + ' Dirham' + (dirhams > 1 ? 's' : '');
+    let resultat = convertir(dirhams) + ' Dirham' + (dirhams > 1 ? 's' : '');
     if (centimes > 0) {
-      result += ' et ' + convert(centimes) + ' Centime' + (centimes > 1 ? 's' : '');
+      resultat += ' et ' + convertir(centimes) + ' Centime' + (centimes > 1 ? 's' : '');
     }
-
-    return result;
+    return resultat;
   };
 
-  const getStatusEmoji2 = (status) => {
-    switch (status?.toLowerCase()) {
-      case 'paid': return '✅';
-      case 'pending': return '⏳';
-      case 'canceled': return '❌';
-      default: return '⏳';
-    }
+  // FR :
+  const generateInvoiceHTML2 = () => {
+    const totalHT2 = selectedInvoices.reduce((sum, inv) => {
+      const montantHT = inv.amount * (1 - inv.discount / 100);
+      return sum + montantHT;
+    }, 0);
+
+    const totalTVA2 = selectedInvoices.reduce((sum, inv) => {
+      const montantHT = inv.amount * (1 - inv.discount / 100);
+      const montantTVA = montantHT * (inv.tva / 100);
+      return sum + montantTVA;
+    }, 0);
+
+    const totalTTC2 = totalHT2 + totalTVA2;
+
+    const obtenirEmojiStatut2 = (statut) => {
+      switch (statut?.toLowerCase()) {
+        case 'paid': return '✅';
+        case 'pending': return '⏳';
+        case 'canceled': return '❌';
+        default: return '⏳';
+      }
+    };
+
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .logo-section img {
+            height: 60px;
+        }
+
+        .logo-section h1 {
+            font-size: 20px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .logo-section .divider {
+            width: 100%;
+            height: 3px;
+            background: #1e3a8a;
+            margin-top: 10px;
+        }
+
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .invoice-left p {
+            margin: 5px 0;
+            color: #4b5563;
+        }
+
+        .invoice-right {
+            text-align: right;
+        }
+
+        .status-line {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .section-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .info-box {
+            border: 1px solid #d1d5db;
+            padding: 8px;
+            margin-bottom: 20px;
+            margin-top: 4px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .info-box .name {
+            color: #1e3a8a;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        thead {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        th {
+            padding: 14px 10px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            background: white;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .totals-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            width: 260px;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .total-row.final {
+            border-top: 2px solid #1e3a8a;
+            margin-top: 2px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .amount-words {
+            background: rgb(235, 213, 52, 0.2);
+            padding: 8px;
+            border-radius: 8px;
+            font-style: italic;
+            color: #374151;
+            text-align: start;
+            font-size: 12px;
+            border-left: 4px solid orange;
+            margin-block: 14px;
+        }
+
+        .footer {
+            margin-top: 10px;
+            border-top: 2px solid #e5e7eb;
+            text-align: center;
+            font-size: 10px;
+            color: #9ca3af;
+        }
+
+        .footer p {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo et Titre -->
+    <div class="logo-section">
+        <img src="{{LOGO_BASE64}}" alt="Logo">
+        <h1>Facture</h1>
+        <div class="divider"></div>
+    </div>
+
+    <!-- Informations de la Facture -->
+    <div class="invoice-info">
+        <div class="invoice-left">
+            <p><strong>${selectedInvoices[0]?.code || ''}</strong></p>
+            <p>Gorges Dades, ${new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+        <div class="invoice-right">
+            <p class="status-line"><strong>Statut :</strong> ${obtenirEmojiStatut2(selectedInvoices[0]?.status)} ${selectedInvoices[0]?.status === 'paid' ? 'Payée' : selectedInvoices[0]?.status === 'pending' ? 'En attente' : 'Annulée'}</p>
+        </div>
+    </div>
+
+    <!-- Section Client -->
+    <div class="section-header">Client</div>
+    <div class="info-box">
+        <p class="name">${selectedInvoices[0]?.customerName || 'N/A'}</p>
+        <p>${selectedInvoices[0]?.customerEmail || 'N/A'}</p>
+        <p>${selectedInvoices[0]?.customerPhone || 'N/A'}</p>
+        <p>${selectedInvoices[0]?.customerAddress || 'N/A'}</p>
+        <p>${selectedInvoices[0]?.customerCountry || 'N/A'}</p>
+    </div>
+
+    <!-- Section Fournisseur -->
+    <div class="section-header">Fournisseur</div>
+    <div class="info-box">
+        <p class="name">Panorama Dades</p>
+        <p>Gorges Dades, Ait Ibriren</p>
+        <p>Boumalne Dades 45150</p>
+        <p>0668762022</p>
+        <p>Auberge-panorama@hotmail.fr</p>
+    </div>
+
+    <!-- Tableau de la Facture -->
+    <table>
+        <thead>
+            <tr>
+                <th>Désignation</th>
+                <th class="text-right">Prix Unitaire</th>
+                <th class="text-center">Unité</th>
+                <th class="text-center">Quantité</th>
+                <th class="text-right">Montant</th>
+                <th class="text-right">Remise</th>
+                <th class="text-right">Montant HT</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${selectedInvoices.map(inv => {
+      const checkIn = new Date(inv.checkIn);
+      const checkOut = new Date(inv.checkOut);
+      const nuits = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+      const prixUnitaire = inv.amount / nuits;
+      const montantHT = inv.amount * (1 - inv.discount / 100);
+
+      return `
+                    <tr>
+                        <td>
+                            <strong>${inv.roomTitle}</strong><br>
+                        </td>
+                        <td class="text-right">${prixUnitaire.toFixed(2)} MAD</td>
+                        <td class="text-center">U</td>
+                        <td class="text-center">${nuits}</td>
+                        <td class="text-right">${parseFloat(inv.amount).toFixed(2)} MAD</td>
+                        <td class="text-right">${inv.discount}%</td>
+                        <td class="text-right">${montantHT.toFixed(2)} MAD</td>
+                    </tr>
+                `;
+    }).join('')}
+        </tbody>
+    </table>
+
+    <!-- Totaux -->
+    <div class="totals-section">
+        <div class="total-row">
+            <span>Total HT :</span>
+            <span>${totalHT2.toFixed(2)} MAD</span>
+        </div>
+        <div class="total-row">
+            <span>TVA :</span>
+            <span>${totalTVA2.toFixed(2)} MAD</span>
+        </div>
+        <div class="total-row final">
+            <span>TOTAL TTC À PAYER :</span>
+            <span>${totalTTC2.toFixed(2)} MAD</span>
+        </div>
+    </div>
+
+    <!-- Montant en Lettres -->
+    <div class="amount-words">
+        <strong>Montant en lettres :</strong> ${nombreEnLettres2(totalTTC2)}
+    </div>
+
+    <!-- Pied de Page -->
+    <div class="footer">
+        <p>Merci pour votre confiance !</p>
+        <p>Panorama Dades - Votre Maison Loin de Chez Vous</p>
+    </div>
+</body>
+</html>
+    `;
   };
 
   const getStatusStyle = (status) => {
