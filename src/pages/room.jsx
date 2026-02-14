@@ -22,6 +22,8 @@ export default function RoomDetail() {
   const [currentRoom, setCurrentRoom] = useState(null);
   const [moreRooms, setMoreRooms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sendLoading, setSendLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -83,21 +85,33 @@ export default function RoomDetail() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { fullName, email, enquiry } = formData;
-    const subject = `New Enquiry from ${fullName}`;
-    const body = `
-      Full Name: ${fullName}
-      Email: ${email}
-
-      Enquiry:
-      ${enquiry}
-    `;
-    const mailtoLink = `mailto:${hotelInfos.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
+    try {
+      setSendLoading(true);
+      const res = await fetch('/api/_mail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Something went wrong');
+      setSent(true);
+      setTimeout(() => {
+        setSent(false);
+      }, 1500);
+      setFormData({
+        fullName: '',
+        email: '',
+        enquiry: '',
+      });
+    } catch (error) {
+      console.error('Error:', error.message);
+    } finally {
+      setSendLoading(false);
+    }
   };
 
   const openGallery = (index) => {
@@ -412,6 +426,12 @@ export default function RoomDetail() {
                         </label>
                       </div>
 
+                      {sent &&
+                        <div className='w-full flex justify-center items-center'>
+                          <p className='text-green-600 text-xs font-bold'>Your enquiry has been sent !</p>
+                        </div>
+                      }
+
                       {/* Submit Button */}
                       <button
                         type="submit"
@@ -420,8 +440,14 @@ export default function RoomDetail() {
                         <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-800" />
                         <div className="absolute inset-0 bg-gradient-to-r from-amber-700 to-amber-900 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                         <span className="relative z-10 flex items-center justify-center space-x-2">
-                          <span>Send Enquiry</span>
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                          {sendLoading ?
+                            <div className="w-6 h-6 mx-auto rounded-full border-4 border-amber-300/30 border-t-white animate-spin" />
+                            :
+                            <>
+                              <span>Send Enquiry</span>
+                              <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                            </>
+                          }
                         </span>
                       </button>
                     </form>

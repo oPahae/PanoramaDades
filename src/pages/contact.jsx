@@ -383,7 +383,7 @@ export default function ContactPage() {
             Book your stay and discover the magic of Dades Valley
           </p>
           <a
-            href="/#home"
+            href="/rooms"
             className="inline-flex items-center space-x-3 px-10 py-5 bg-gradient-to-r from-amber-600 to-amber-800 text-white rounded-lg font-semibold tracking-wider uppercase shadow-xl hover:shadow-2xl transform hover:-translate-y-0.5 transition-all group"
           >
             <span>Book Now</span>
